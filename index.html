@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>成大狗狗 GO</title>
+  <meta name="description" content="在成大成功校區到處晃晃，和成大流浪動物志工隊中途的 12 隻狗狗交朋友！">
+  <meta property="og:title" content="成大狗狗 GO 🐾">
+  <meta property="og:description" content="在成大成功校區到處晃晃，和中途的 12 隻狗狗交朋友！">
+  <meta property="og:image" content="thumbnail.png">
+  <meta name="theme-color" content="#ffb547">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ========== 開始畫面 ========== -->
+    <section id="screen-start" class="screen show">
+      <div class="card">
+        <p class="team">成大流浪動物志工隊</p>
+        <h1>成大狗狗 GO 🐾</h1>
+        <p class="sub">在成大成功校區到處晃晃，和中途的狗狗們交朋友！</p>
+        <div id="start-dogs" class="start-dogs"></div>
+        <div class="btn-row">
+          <button id="btn-start" class="btn primary">開始散步</button>
+          <button id="btn-howto" class="btn">操作說明</button>
+          <button id="btn-dex-start" class="btn">📖 狗狗圖鑑</button>
+        </div>
+        <p class="note">12 隻狗狗全員到齊！快來把圖鑑收集完吧～</p>
+      </div>
+    </section>
+
+    <!-- ========== 遊玩畫面（地圖） ========== -->
+    <section id="screen-game" class="screen">
+      <div id="view" class="view">
+        <div id="world" class="world"></div>
+
+        <div class="hud">
+          <span class="pill">👣 <b id="steps">0</b></span>
+          <span class="pill">🥎 <b id="balls">0</b></span>
+          <span class="pill">🍪 <b id="snacks">0</b></span>
+          <span class="hud-right">
+            <button id="btn-dex" class="btn small">📖</button>
+            <button id="btn-pause" class="btn small">⏸ 說明</button>
+            <button id="btn-end" class="btn small">🌙 休息</button>
+          </span>
+        </div>
+        <div id="toasts" class="toasts"></div>
+
+        <!-- 遇到狗狗的畫面 -->
+        <div id="encounter" class="encounter hidden">
+          <div class="enc-sky"></div>
+          <div class="enc-ground"></div>
+          <div class="enc-top"><b id="enc-name"></b> <span id="enc-diff"></span></div>
+          <div id="enc-msg" class="enc-msg"></div>
+          <div id="enc-dog" class="enc-dog">
+            <div id="enc-ring" class="ring"></div>
+            <div id="enc-svg"></div>
+            <div id="enc-say" class="say"></div>
+          </div>
+          <div id="enc-ball" class="enc-ball">🥎</div>
+          <div class="enc-bottom">
+            <button id="item-ball" class="item">🥎 球 ×<span id="c-ball">0</span></button>
+            <button id="item-snack" class="item">🍪 零食 ×<span id="c-snack">0</span></button>            <button id="enc-leave" class="btn small">🏃 先離開</button>
+          </div>
+        </div>
+
+        <!-- 中途裡面：和朋友們互動 -->
+        <div id="shelter" class="shelter hidden">
+          <div class="sh-wall">
+            <div class="sh-sign">🏠 成大中途</div>
+            <div class="sh-window"></div>
+          </div>
+          <div class="sh-floor"></div>
+          <div class="sh-bed" style="left:6%;top:50%"></div>
+          <div class="sh-bed" style="left:76%;top:52%"></div>
+          <div class="sh-deco" style="left:30%;top:47%">🥣</div>
+          <div class="sh-deco" style="left:36%;top:47%">💧</div>
+          <div class="sh-deco" style="left:62%;top:94%">🧸</div>
+          <div class="sh-deco" style="left:8%;top:96%">🥎</div>
+          <div id="sh-area" class="sh-area"></div>
+          <div class="sh-top">
+            <span class="pill"><b>🏠 中途</b> <span id="sh-count"></span></span>
+            <span class="pill">🍪 <b id="sh-snacks">0</b></span>
+            <button id="sh-exit" class="btn small">🚪 回到校園</button>
+          </div>
+          <div id="sh-empty" class="sh-empty hidden">
+            <p>中途裡還沒有朋友～</p>
+            <p class="tiny">先去校園裡交朋友，交到的狗狗就會來這裡玩！</p>
+          </div>
+          <div id="sh-panel" class="sh-panel hidden">
+            <img id="sh-photo" alt="">
+            <div class="sh-info"><b id="sh-name"></b><div id="sh-level" class="sh-level"></div></div>
+            <button id="sh-close" class="sh-close" title="關閉">✕</button>
+            <div id="sh-acts" class="sh-acts"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 結果畫面 ========== -->
+    <section id="screen-result" class="screen">
+      <div class="card">
+        <h2>今天的散步紀錄 🌙</h2>
+        <p id="r-title" class="r-title"></p>
+        <p id="r-summary" class="r-summary"></p>
+        <h3>今天交到的朋友</h3>
+        <div id="r-dogs" class="r-dogs"></div>
+        <div class="btn-row">
+          <button id="btn-again" class="btn primary">再出去晃晃</button>
+          <button id="btn-dex-result" class="btn">📖 看圖鑑</button>
+          <button id="btn-home" class="btn">回首頁</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 操作說明 ========== -->
+    <div id="howto" class="modal hidden">
+      <div class="modal-card">
+        <h2>怎麼玩？</h2>
+        <ol class="steps">
+          <li><b>點地圖</b>上的任何地方，你就會走過去（電腦也能用方向鍵）。</li>
+          <li>走近狗狗，看到狗狗頭上冒出 <b>❗</b>，就<b>點牠</b>開始玩。</li>
+          <li>把 🥎 <b>往上滑</b>丟給狗狗，或直接<b>點一下球</b>。</li>
+          <li><b>圓圈變小</b>時丟中，比較容易成為好朋友！</li>
+          <li>地圖上的 🦴 骨頭、🍱 廚餘，<b>走過去就能回收</b>，還能換到球。</li>
+          <li>系館進不去；有些地方也不在散步範圍內，走到時會跳出提醒，換個方向走就好。</li>
+          <li>走到 <b>🏠 中途小屋</b>旁邊點它，就能進去和已經交到的朋友們互動！</li>
+          <li>沒有時間限制，想休息時點右上角「🌙 休息」，看看今天的紀錄。</li>
+          <li>點 📖 打開圖鑑，<b>點狗狗的格子</b>可以看牠的詳細資料。</li>
+        </ol>
+        <p class="tiny">慢慢晃、慢慢玩，丟不中也不會怎樣～</p>
+        <button id="btn-close-howto" class="btn primary">知道了！</button>
+      </div>
+    </div>
+
+    <!-- ========== 狗狗圖鑑 ========== -->
+    <div id="dex" class="modal hidden">
+      <div class="modal-card wide">
+        <h2>📖 狗狗圖鑑 <small id="dex-count"></small></h2>
+        <p class="tiny">點狗狗的格子，可以看牠的詳細資料</p>
+        <div id="dex-grid" class="dex-grid"></div>
+        <button id="btn-close-dex" class="btn primary">關閉</button>
+      </div>
+    </div>
+
+    <!-- ========== 圖鑑：單隻狗狗的詳細資料 ========== -->
+    <div id="dexinfo" class="modal hidden">
+      <div class="modal-card">
+        <img id="di-photo" class="f-photo" alt="">
+        <p id="di-no" class="di-no"></p>
+        <h2 id="di-name"></h2>
+        <div id="di-body"></div>
+        <button id="btn-close-dexinfo" class="btn primary">← 回圖鑑</button>
+      </div>
+    </div>
+
+    <!-- ========== 成為好朋友 ========== -->
+    <div id="friend" class="modal hidden">
+      <div class="modal-card">
+        <img id="f-photo" class="f-photo" alt="">
+        <h2 id="f-title"></h2>
+        <p id="f-level" class="f-level"></p>
+        <p id="f-fact" class="f-fact"></p>
+        <button id="btn-close-friend" class="btn primary">繼續散步</button>
+      </div>
+    </div>
+
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
